@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.Compressor;
 
@@ -55,8 +57,17 @@ public class Robot extends TimedRobot {
 
   public static int turretError = 100;
 
-  public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = limelightTable.getEntry("tx");
+  NetworkTableEntry ty = limelightTable.getEntry("ty");
+  NetworkTableEntry ta = limelightTable.getEntry("ta");
+  NetworkTableEntry tv = limelightTable.getEntry("tv");
+
+
+  public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 0.0).getEntry();
   public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
+  public NetworkTableEntry camADashboard = Shuffleboard.getTab("Default").add("Camera Area", 0.0).getEntry();
+  public NetworkTableEntry camVDashboard = Shuffleboard.getTab("Defualt").add("Visible Target", 0.0).getEntry();
 
   public NetworkTableEntry flywheelVelocityDashboard = Shuffleboard.getTab("Default").add("Flywheel Velocity", 0.0).getEntry();
 
@@ -73,6 +84,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    /*
     cam0 = CameraServer.getInstance().startAutomaticCapture();
 
     try {
@@ -80,6 +92,7 @@ public class Robot extends TimedRobot {
     } catch(Exception e) {
       System.out.println(e.toString());
     }
+    */
 
     compressor.clearAllPCMStickyFaults();
     //compressor.getCompressorCurrent();
@@ -100,6 +113,11 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    double LimelightX = tx.getDouble(0.0);
+    double LimelightY = ty.getDouble(0.0);
+    double LimelightArea = ta.getDouble(0.0);
+
+    /*
     String data = "";
     if(cam0_ser != null) {
       data = cam0_ser.readString();
@@ -120,9 +138,13 @@ public class Robot extends TimedRobot {
         System.out.println(e);
       }
     }
+    */
 
-    camXDashboard.setDouble(camX);
-    camYDashboard.setDouble(camY);
+    camXDashboard.setDouble(LimelightX);
+    camYDashboard.setDouble(LimelightY);
+    camADashboard.setDouble(LimelightArea);
+
+
     flywheelVelocityDashboard.setDouble(flywheelVel);
 
     hoodTargetDashboard.setDouble(hoodTarget);
@@ -145,6 +167,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    limelightTable.getEntry("camMode").setNumber(0);
+    limelightTable.getEntry("ledMode").setNumber(0);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -167,6 +191,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    limelightTable.getEntry("camMode").setNumber(1);
+    limelightTable.getEntry("ledMode").setNumber(0);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

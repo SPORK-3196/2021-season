@@ -13,32 +13,32 @@ public class Climber extends SubsystemBase {
     public CANSparkMax leftClimberMotor = new CANSparkMax(5, MotorType.kBrushless);
     public CANSparkMax rightClimberMotor = new CANSparkMax(6, MotorType.kBrushless);
 
-    public static Solenoid intakeSolenoid1 = new Solenoid(50, 4);
+    public static Solenoid climberSolenoid = new Solenoid(50, 4);
 
-    public void runMotorsForward(double power) {
-        leftClimberMotor.set(power);
-        rightClimberMotor.set(power);
+    public void runMotorsForward(double fowardPower) {
+        leftClimberMotor.set(fowardPower);
+        rightClimberMotor.set(fowardPower);
     }
-    public void runMotorsBackward(double power) {
-        leftClimberMotor.set(-1 * power);
-        rightClimberMotor.set(-1* power);
+    public void runMotorsBackward(double backwardPower) {
+        leftClimberMotor.set(-1 * backwardPower);
+        rightClimberMotor.set(-1* backwardPower);
     }
     public void stopMotors() {
         leftClimberMotor.set(0.0);
         rightClimberMotor.set(0.0);
     }
 
-    public void spinClockwise() {
+    public void spinClockwise(double spinClockwisePower) {
         boolean clockwiseSpin = Robot.controllerSecondary.getBumper(Hand.kRight);
         if(clockwiseSpin) {
-            runMotorsForward(0.1); // Reverse intake
+            runMotorsForward(spinClockwisePower);
         }
       }
 
-    public void spinCounterClockwise() {
+    public void spinCounterClockwise(double spinCounterClockwisePower) {
         boolean counterclockSpin = Robot.controllerSecondary.getBumper(Hand.kLeft);
         if(counterclockSpin) {
-            runMotorsBackward(0.1); // Reverse intake
+            runMotorsBackward(spinCounterClockwisePower);
         }
       }
 }
