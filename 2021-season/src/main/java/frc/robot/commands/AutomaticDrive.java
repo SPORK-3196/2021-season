@@ -19,11 +19,11 @@ public class DriveWithJoystick extends CommandBase {
   Drivetrain drivetrain;
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = limelightTable.getEntry("tx");
-  NetworkTableEntry ty = limelightTable.getEntry("ty");
-  NetworkTableEntry ta = limelightTable.getEntry("ta");
-  NetworkTableEntry tv = limelightTable.getEntry("tv");
-  
+  double tx = limelightTable.getEntry("tx");
+  double ty = limelightTable.getEntry("ty");
+  double ta = limelightTable.getEntry("ta");
+  double tv = limelightTable.getEntry("tv");
+
   /**
    * Creates a new DriveWithJoystick.
    */

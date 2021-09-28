@@ -80,7 +80,7 @@ public class RobotContainer {
       return new FiveBallAuto(turret, flywheel, index, drivetrain);
     } else {
       */
-      return new DriveForwardTimed(drivetrain, 1.0, -0.6);
+      return new DriveForwardTimed(drivetrain, 1.0, 0.6);
     //}
   }
 }
