@@ -12,22 +12,24 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveWithJoystick extends CommandBase {
+public class AutomaticDrive extends CommandBase {
 
   Drivetrain drivetrain;
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-  double tx = limelightTable.getEntry("tx");
-  double ty = limelightTable.getEntry("ty");
-  double ta = limelightTable.getEntry("ta");
-  double tv = limelightTable.getEntry("tv");
+  double tx = limelightTable.getEntry("tx").getDouble(0.0);
+  double ty = limelightTable.getEntry("ty").getDouble(0.0);
+  double ta = limelightTable.getEntry("ta").getDouble(0.0);
+  double tv = limelightTable.getEntry("tv").getDouble(0.0);
 
   /**
    * Creates a new DriveWithJoystick.
    */
-  public DriveWithJoystick(Drivetrain p_drivetrain) {
+  public AutomaticDrive(Drivetrain p_drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrain = p_drivetrain;
     addRequirements(drivetrain);
@@ -48,12 +50,16 @@ public class DriveWithJoystick extends CommandBase {
   @Override
   public void execute() {
    // System.out.println("Execute Works");
-
-  
+    
+   
     double controlConstant = -0.1;
 
 
-    drivetrain.drivetrain.arcadeDrive(leftY * -0.80, leftX * 0.80);
+    double heading_error = tx;
+    double horizontalSteeringAdjustment = controlConstant * tx;
+
+
+    drivetrain.drivetrain.arcadeDrive(0, horizontalSteeringAdjustment);
 
     /*
     boolean cool = Robot.controllerDrive.getXButton();
