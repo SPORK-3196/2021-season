@@ -20,6 +20,9 @@ public class AutomaticDrive extends CommandBase {
 
   Drivetrain drivetrain;
 
+  public Timer autoTimer = new Timer();
+  public double time = 5.0;
+
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   double tx = limelightTable.getEntry("tx").getDouble(0.0);
   double ty = limelightTable.getEntry("ty").getDouble(0.0);
@@ -29,11 +32,13 @@ public class AutomaticDrive extends CommandBase {
   /**
    * Creates a new DriveWithJoystick.
    */
-  public AutomaticDrive(Drivetrain p_drivetrain) {
+  public AutomaticDrive(Drivetrain p_drivetrain, double p_time) {
     // Use addRequirements() here to declare subsystem dependencies.
+    time = p_time
     drivetrain = p_drivetrain;
     addRequirements(drivetrain);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -44,6 +49,8 @@ public class AutomaticDrive extends CommandBase {
     drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
     drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
     drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
+    autoTimer.reset();
+    autoTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -77,7 +84,7 @@ public class AutomaticDrive extends CommandBase {
         drivetrain.drivetrain.tankDrive(leftRangeInput, rightRangeInput);
       } 
     }
-    
+
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());
     Drivetrain.falconTempDashboard[1].setDouble(drivetrain.rearLeft.getTemperature());
     Drivetrain.falconTempDashboard[2].setDouble(drivetrain.frontRight.getTemperature());
@@ -92,6 +99,6 @@ public class AutomaticDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return autoTimer.get() >= time;
   }
 }
