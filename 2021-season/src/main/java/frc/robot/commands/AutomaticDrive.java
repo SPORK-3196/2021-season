@@ -50,35 +50,34 @@ public class AutomaticDrive extends CommandBase {
   @Override
   public void execute() {
    // System.out.println("Execute Works");
-    
-   
     double controlConstant = -0.1;
+    //double heading_error = tx;
+    double autoSteerAdjustment = controlConstant * tx;
+    double autoDistanceAdjustment = controlConstant * ty;
+    
+    leftAimInput = autoSteerAdjustment;
+    rightAimInput = -1 * autoSteerAdjustment;
 
-
-    double heading_error = tx;
-    double horizontalSteeringAdjustment = controlConstant * tx;
-
-
-    drivetrain.drivetrain.arcadeDrive(0, horizontalSteeringAdjustment);
+    leftRangeInput = autoDistanceAdjustment;
+    rightRangeInput = autoDistanceAdjustment;
+    
+    //drivetrain.drivetrain.arcadeDrive(0, horizontalSteeringAdjustment);
 
     /*
     boolean cool = Robot.controllerDrive.getXButton();
     Drivetrain.driveCooler.set(cool);
     */
 
-    if(Robot.controllerDrive.getAButton()) {
-      drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
-      drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
-      drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
-      drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+    if(tv < 1) {
+      drivetrain.drivetrain.arcadeDrive(0, 0.5);
     } else {
-      drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
-      drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
-      drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
-      drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+      if (ty == 0.0) {
+        drivetrain.drivetrain.tankDrive(leftAimInput, rightAimInput);
+      } else {
+        drivetrain.drivetrain.tankDrive(leftRangeInput, rightRangeInput);
+      } 
     }
     
-
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());
     Drivetrain.falconTempDashboard[1].setDouble(drivetrain.rearLeft.getTemperature());
     Drivetrain.falconTempDashboard[2].setDouble(drivetrain.frontRight.getTemperature());
