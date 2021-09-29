@@ -15,6 +15,7 @@ import frc.robot.Robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.Timer;
 
 public class AutomaticDrive extends CommandBase {
 
@@ -34,7 +35,7 @@ public class AutomaticDrive extends CommandBase {
    */
   public AutomaticDrive(Drivetrain p_drivetrain, double p_time) {
     // Use addRequirements() here to declare subsystem dependencies.
-    time = p_time
+    time = p_time;
     drivetrain = p_drivetrain;
     addRequirements(drivetrain);
   }
@@ -62,11 +63,11 @@ public class AutomaticDrive extends CommandBase {
     double autoSteerAdjustment = controlConstant * tx;
     double autoDistanceAdjustment = controlConstant * ty;
     
-    leftAimInput = autoSteerAdjustment;
-    rightAimInput = -1 * autoSteerAdjustment;
+    double leftAimInput = autoSteerAdjustment;
+    double rightAimInput = -1 * autoSteerAdjustment;
 
-    leftRangeInput = autoDistanceAdjustment;
-    rightRangeInput = autoDistanceAdjustment;
+    double leftRangeInput = autoDistanceAdjustment;
+    double rightRangeInput = autoDistanceAdjustment;
     
     //drivetrain.drivetrain.arcadeDrive(0, horizontalSteeringAdjustment);
 
