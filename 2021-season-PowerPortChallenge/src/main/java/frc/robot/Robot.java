@@ -55,8 +55,8 @@ public class Robot extends TimedRobot {
 
   public static int turretError = 100;
 
-  public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
-  public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
+  //public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
+  //public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
 
   public NetworkTableEntry flywheelVelocityDashboard = Shuffleboard.getTab("Default").add("Flywheel Velocity", 0.0).getEntry();
 
@@ -73,12 +73,12 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    cam0 = CameraServer.getInstance().startAutomaticCapture();
+    //cam0 = CameraServer.getInstance().startAutomaticCapture();
 
     try {
-      cam0_ser = new SerialPort(115200, SerialPort.Port.kUSB);
+     // cam0_ser = new SerialPort(115200, SerialPort.Port.kUSB);
     } catch(Exception e) {
-      System.out.println(e.toString());
+      //System.out.println(e.toString());
     }
 
     compressor.clearAllPCMStickyFaults();
@@ -113,16 +113,16 @@ public class Robot extends TimedRobot {
         String xStr = numData.substring(0,commaIndex);
         String yStr = numData.substring(commaIndex+1);
 
-        camX = Double.parseDouble(xStr);
-        camY = Double.parseDouble(yStr);
+        //camX = Double.parseDouble(xStr);
+        //camY = Double.parseDouble(yStr);
         //System.out.println(camX);
       } catch(Exception e) {
         System.out.println(e);
       }
     }
 
-    camXDashboard.setDouble(camX);
-    camYDashboard.setDouble(camY);
+    //camXDashboard.setDouble(camX);
+    //camYDashboard.setDouble(camY);
     flywheelVelocityDashboard.setDouble(flywheelVel);
 
     hoodTargetDashboard.setDouble(hoodTarget);
