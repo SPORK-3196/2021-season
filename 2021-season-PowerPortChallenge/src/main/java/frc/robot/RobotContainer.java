@@ -22,6 +22,7 @@ import frc.robot.commands.RunIndex;
 import frc.robot.subsystems.Index;
 import frc.robot.commands.RunTurret;
 import frc.robot.subsystems.Turret;
+import frc.robot.commands.AutomaticDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -76,10 +77,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if(autoSelect.getBoolean(true)) {
+    /* if(autoSelect.getBoolean(true)) {
       return new FiveBallAuto(turret, flywheel, index, drivetrain);
     } else {
       return new DriveForwardTimed(drivetrain, 1.0);
+    */
+    return new DriveForwardTimed(drivetrain, 1.0, 0.6);
     }
   }
 }

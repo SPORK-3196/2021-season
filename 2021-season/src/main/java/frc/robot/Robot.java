@@ -35,8 +35,12 @@ public class Robot extends TimedRobot {
 
   public Compressor compressor = new Compressor(50);
 
-  private UsbCamera cam0;
-  private SerialPort cam0_ser;
+  //private UsbCamera cam0;
+  //private SerialPort cam0_ser;
+
+  private MjpegServer server;
+  private HttpCamera LLFeed;
+  private int cameraStream = 0;
 
   public static double camX = 320.0;
   public static double camY = 0.0;
@@ -80,6 +84,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    ShuffleboardTab dashboardTab = Shuffleboard.getTab("Dash");
+    LLFeed = new HttpCamera("limelight", "http://10.31.96.11:5800/stream.mjpg");
+    dashboardTab.add("LimeLight", LLFeed);
 
     /*
     cam0 = CameraServer.getInstance().startAutomaticCapture();
