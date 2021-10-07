@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -69,7 +70,19 @@ public class Robot extends TimedRobot {
   public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 0.0).getEntry();
   public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
   public NetworkTableEntry camADashboard = Shuffleboard.getTab("Default").add("Camera Area", 0.0).getEntry();
-  public NetworkTableEntry camVDashboard = Shuffleboard.getTab("Defualt").add("Visible Target", 0.0).getEntry();
+  public NetworkTableEntry camVDashboard = Shuffleboard.getTab("Default").add("Visible Target", 0.0).getEntry();
+
+  public NetworkTableEntry RightBumperPrimary = Shuffleboard.getTab("Default").add("RightBumper - Primary", false).getEntry();
+  public NetworkTableEntry LeftBumperPrimary = Shuffleboard.getTab("Default").add("LeftBumper - Primary", false).getEntry();
+  public NetworkTableEntry RightBumperSecondary = Shuffleboard.getTab("Default").add("RightBumper - Secondary", false).getEntry();
+  public NetworkTableEntry LeftBumperSecondary = Shuffleboard.getTab("Default").add("LeftBumper - Secondary", false).getEntry();
+
+  public NetworkTableEntry RightTriggerPrimary = Shuffleboard.getTab("Default").add("RightTrigger - Primary", 0.0).getEntry();
+  public NetworkTableEntry LeftTriggerPrimary = Shuffleboard.getTab("Default").add("Leftrigger - Primary", 0.0).getEntry();
+
+  public NetworkTableEntry RightTriggerSecondary = Shuffleboard.getTab("Default").add("RightTrigger - Secondary", 0.0).getEntry();
+  public NetworkTableEntry LeftTriggerSecondary = Shuffleboard.getTab("Default").add("Leftrigger - Secondary", 0.0).getEntry();
+  
 
   public NetworkTableEntry flywheelVelocityDashboard = Shuffleboard.getTab("Default").add("Flywheel Velocity", 0.0).getEntry();
 
@@ -124,6 +137,7 @@ public class Robot extends TimedRobot {
     double LimelightY = ty.getDouble(0.0);
     double LimelightArea = ta.getDouble(0.0);
 
+    
     /*String data = "";
     if(cam0_ser != null) {
       data = cam0_ser.readString();
@@ -149,6 +163,18 @@ public class Robot extends TimedRobot {
     camXDashboard.setDouble(LimelightX);	
     camYDashboard.setDouble(LimelightY);	
     camADashboard.setDouble(LimelightArea);
+
+    RightBumperPrimary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+    LeftBumperPrimary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+
+    RightBumperSecondary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+    LeftBumperSecondary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+
+    RightTriggerPrimary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    LeftTriggerPrimary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    RightTriggerSecondary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    LeftTriggerSecondary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+
     
     flywheelVelocityDashboard.setDouble(flywheelVel);
 

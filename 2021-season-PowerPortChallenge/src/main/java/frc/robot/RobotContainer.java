@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DriveForwardTimed;
+import frc.robot.commands.AutomaticDrive;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.RunIndex;
 import frc.robot.commands.RunTurret;
@@ -75,7 +75,7 @@ public class RobotContainer {
     } else {
       return new DriveForwardTimed(drivetrain, 1.0);
     */
-    return new DriveForwardTimed(drivetrain, 1.0, 0.6);
+    return new AutomaticDrive(drivetrain, 5.0, turret, flywheel);
     }
 
 }

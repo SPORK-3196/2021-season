@@ -21,7 +21,7 @@ import frc.robot.subsystems.Turret;
 
 public class AutomaticDrive extends CommandBase {
 
-  Drivetrain drivetrain;
+  private final Drivetrain drivetrain;
   private final Turret turret;
   private final Flywheel flywheel;
 
@@ -111,31 +111,39 @@ public class AutomaticDrive extends CommandBase {
     }
 */
 
-    if (tv == 1)
+    if (tv == 0)
     {
-      double heading_error = -1 * tx;
-      double distance_error = -1 * ty;
- 
-
-      if (tx > 1.0)
-      {
-          steering_adjust = aimControlConstant * heading_error - min_aim_command;
-      }
-      else if (tx < 1.0)
-      {
-          steering_adjust = aimControlConstant * heading_error + min_aim_command;
-          turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-          Robot.shooting = true;
-      }
-
-      double distance_adjust = distanceControlConstant * distance_error;
-
-      leftInput += steering_adjust + distance_adjust;
-      rightInput -= steering_adjust + distance_adjust;
-
-      drivetrain.drivetrain.tankDrive(leftInput, rightInput);
+      drivetrain.drivetrain.arcadeDrive(0, 0.15);
+      
     } else {
-        drivetrain.drivetrain.arcadeDrive(0, 0.5);
+        
+        double heading_error = -1 * tx;
+        double distance_error = -1 * ty;
+  
+
+        if (tx > 1.0)
+        {
+            steering_adjust = aimControlConstant * heading_error - min_aim_command;
+        }
+        else if (tx < 1.0)
+        {
+            steering_adjust = aimControlConstant * heading_error + min_aim_command;
+            //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
+            //Robot.shooting = true;
+        }
+        
+
+        double distance_adjust = distanceControlConstant * distance_error;
+
+        leftInput = steering_adjust + distance_adjust;
+        rightInput = steering_adjust + distance_adjust;
+        rightInput = rightInput * -1;
+
+        drivetrain.drivetrain.tankDrive(leftInput, rightInput);
+        System.out.println(steering_adjust);
+        System.out.println(distance_adjust);
+        System.out.println(leftInput);
+        System.out.println(rightInput);
     }
 
     if(Robot.shooting) {
