@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class AutomaticDrive extends CommandBase {
 
@@ -24,11 +26,17 @@ public class AutomaticDrive extends CommandBase {
   public Timer autoTimer = new Timer();
   public double time = 5.0;
 
+  
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable robotTable = NetworkTableInstance.getDefault().getTable("Default");
+
+
   double tx = limelightTable.getEntry("tx").getDouble(0.0);
   double ty = limelightTable.getEntry("ty").getDouble(0.0);
   double ta = limelightTable.getEntry("ta").getDouble(0.0);
   double tv = limelightTable.getEntry("tv").getDouble(0.0);
+  boolean shootDuringAuto = robotTable.getEntry("Shoot during auto?").getBoolean(false);
+
 
   /**
    * Creates a new DriveWithJoystick.

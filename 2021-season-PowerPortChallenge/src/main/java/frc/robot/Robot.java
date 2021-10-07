@@ -7,18 +7,17 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -55,9 +54,7 @@ public class Robot extends TimedRobot {
 
   public static int turretError = 100;
 
-  private MjpegServer server;	
   private HttpCamera LLFeed;	
-  private int cameraStream = 0;
 
   //public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
   //public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
@@ -164,6 +161,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    limelightTable.getEntry("camMode").setNumber(1);
+    limelightTable.getEntry("ledMode").setNumber(1);
   }
 
   @Override
@@ -200,7 +199,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     limelightTable.getEntry("camMode").setNumber(1);
-    limelightTable.getEntry("ledMode").setNumber(0);
+    limelightTable.getEntry("ledMode").setNumber(1);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -219,6 +218,8 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    limelightTable.getEntry("camMode").setNumber(0);
+    limelightTable.getEntry("ledMode").setNumber(2);
   }
 
   /**

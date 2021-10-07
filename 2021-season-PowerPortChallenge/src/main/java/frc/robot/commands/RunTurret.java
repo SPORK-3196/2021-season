@@ -7,18 +7,14 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Turret;
-import java.lang.Math;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
 public class RunTurret extends CommandBase {
 
@@ -85,10 +81,10 @@ public class RunTurret extends CommandBase {
 
     int pov = Robot.controllerSecondary.getPOV();
 
-    boolean greenZone = Robot.controllerSecondary.getAButton();
+    //boolean greenZone = Robot.controllerSecondary.getAButton();
+    //boolean yellowZone = Robot.controllerSecondary.getXButton();
+    //boolean blueZone = Robot.controllerSecondary.getYButton(); //commented mARCH 8TH
     //int greenZone = Robot.controllerSecondary.getPOV(); commented march 8th, bad code
-    boolean yellowZone = Robot.controllerSecondary.getXButton();
-    boolean blueZone = Robot.controllerSecondary.getYButton(); //commented mARCH 8TH
     //boolean redZone = Robot.controllerSecondary.get
 
     System.out.println("POV = " + pov);

@@ -17,21 +17,23 @@ public class DriveForwardTimed extends CommandBase {
 
   public Timer driveTimer = new Timer();
   public double time = 3.0;
+  public double power = 0.6;
 
   /**
    * Creates a new DriveForwardTimed.
    */
-  public DriveForwardTimed(Drivetrain p_drivetrain, double p_time) {
+  public DriveForwardTimed(Drivetrain p_drivetrain, double p_time, double p_power) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrain = p_drivetrain;
     time = p_time;
+    power = p_power;
     addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.drivetrain.arcadeDrive(0.6, 0.0);
+    drivetrain.drivetrain.arcadeDrive(power, 0.0);
     driveTimer.reset();
     driveTimer.start();
   }
