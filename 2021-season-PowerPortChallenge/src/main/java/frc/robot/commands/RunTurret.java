@@ -114,7 +114,7 @@ public class RunTurret extends CommandBase {
     if(pov == 00) {
       turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
       Robot.shooting = true;
-      System.out.println("greenZone");
+      System.out.println("startingLine");
     } else if(pov == 270) {//yellowZone
       // 15 is max hood value
       turret.hoodPID.setReference(10.75 , ControlType.kPosition);//9.3, 9.5, 10.0, 10.2, 10.4, 11.0
@@ -122,9 +122,9 @@ public class RunTurret extends CommandBase {
       System.out.println("yellowZone");
     } else if(pov == 180) {//og blueZone
       // 15 is max hood value  11.0
-      turret.hoodPID.setReference(11.675 + Robot.manualHoodOffset, ControlType.kPosition);// og 12.0
+      turret.hoodPID.setReference(1.8 + Robot.manualHoodOffset, ControlType.kPosition);// og 12.0
       Robot.shooting = true;
-      System.out.println("blueZone");
+      System.out.println("closeRange");
     } else if (pov == 90) {//og just an else statement, created for 4th zone
       System.out.println("purpleZone");
       turret.hoodPID.setReference(10.6 + Robot.manualHoodOffset, ControlType.kPosition);// og 12.0

@@ -76,7 +76,7 @@ public class AutomaticDrive extends CommandBase {
    
     double aimControlConstant = -0.1;
     double distanceControlConstant = -0.1;
-    double min_aim_command = 0.05;
+    double min_aim_command = 0.1;
 
     
     
