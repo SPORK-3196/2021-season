@@ -33,10 +33,7 @@ public class AutomaticDrive extends CommandBase {
   NetworkTable robotTable = NetworkTableInstance.getDefault().getTable("Default");
 
 
-  double tx = limelightTable.getEntry("tx").getDouble(0.0);
-  double ty = limelightTable.getEntry("ty").getDouble(0.0);
-  double ta = limelightTable.getEntry("ta").getDouble(0.0);
-  double tv = limelightTable.getEntry("tv").getDouble(0.0);
+  
   boolean shootDuringAuto = robotTable.getEntry("Shoot during auto?").getBoolean(false);
 
 
@@ -71,13 +68,15 @@ public class AutomaticDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    double tx = limelightTable.getEntry("tx").getDouble(0.0);
+    double ty = limelightTable.getEntry("ty").getDouble(0.0);
+    double ta = limelightTable.getEntry("ta").getDouble(0.0);
+    double tv = limelightTable.getEntry("tv").getDouble(0.0);
    
     double aimControlConstant = -0.1;
     double distanceControlConstant = -0.1;
     double min_aim_command = 0.05;
-    double steering_adjust = 0;
-    double leftInput = 0;
-    double rightInput = 0;
 
     
     
@@ -86,64 +85,30 @@ public class AutomaticDrive extends CommandBase {
     Drivetrain.driveCooler.set(cool);
     */
 
-/*
-    if(tv < 1) {
-      drivetrain.drivetrain.arcadeDrive(0, 0.5);
-    } else {
-      if (ty == 0.0) {
-        drivetrain.drivetrain.tankDrive(leftAimInput, rightAimInput);
-      } else {
-        drivetrain.drivetrain.tankDrive(leftRangeInput, rightRangeInput);
-      } 
-    }
-
-    if(Robot.shooting) {
-        if(Robot.flywheelVel < Flywheel.velocityTarget) {
-          flywheel.flywheel1.set(1.0);
-        } else {
-          flywheel.flywheel1.set(0.925);//og 0.95
-        }
-        turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-        Robot.shooting = true;
-    } else {
-        //flywheel.disable();
-        flywheel.flywheel1.set(0.0);
-    }
-*/
-
     if (tv == 0)
     {
       drivetrain.drivetrain.arcadeDrive(0, 0.15);
       
     } else {
-        
-        double heading_error = -1 * tx;
-        double distance_error = -1 * ty;
-  
 
+        double heading_error = -1 * tx;
+        double steering_adjust = 0.0;
+  
         if (tx > 1.0)
         {
-            steering_adjust = aimControlConstant * heading_error - min_aim_command;
-        }
+          steering_adjust = aimControlConstant * heading_error - min_aim_command;
+      }
         else if (tx < 1.0)
         {
-            steering_adjust = aimControlConstant * heading_error + min_aim_command;
-            //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-            //Robot.shooting = true;
+          steering_adjust = aimControlConstant * heading_error + min_aim_command;
+          //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
+          //Robot.shooting = true;
         }
         
-
-        double distance_adjust = distanceControlConstant * distance_error;
-
-        leftInput = steering_adjust + distance_adjust;
-        rightInput = steering_adjust + distance_adjust;
-        rightInput = rightInput * -1;
+        double leftInput = 0 + steering_adjust;
+        double rightInput = 0 - steering_adjust;
 
         drivetrain.drivetrain.tankDrive(leftInput, rightInput);
-        System.out.println(steering_adjust);
-        System.out.println(distance_adjust);
-        System.out.println(leftInput);
-        System.out.println(rightInput);
     }
 
     if(Robot.shooting) {
