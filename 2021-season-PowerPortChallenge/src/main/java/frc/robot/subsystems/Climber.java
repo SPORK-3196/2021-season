@@ -29,16 +29,10 @@ public class Climber extends SubsystemBase {
     }
 
     public void spinClockwise(double spinClockwisePower) {
-        boolean clockwiseSpin = Robot.controllerSecondary.getBumper(Hand.kRight);
-        if(clockwiseSpin) {
-            runMotorsForward(spinClockwisePower);
-        }
+        runMotorsForward(spinClockwisePower);
       }
 
     public void spinCounterClockwise(double spinCounterClockwisePower) {
-        boolean counterclockSpin = Robot.controllerSecondary.getBumper(Hand.kLeft);
-        if(counterclockSpin) {
-            runMotorsBackward(spinCounterClockwisePower);
-        }
+        runMotorsBackward(spinCounterClockwisePower);
       }
 }
