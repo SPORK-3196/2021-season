@@ -16,7 +16,7 @@ import frc.robot.subsystems.Turret;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FiveBallAuto extends SequentialCommandGroup {
+public class SequentialBallAuto extends SequentialCommandGroup {
   /**
    * Creates a new FiveBallAuto.
    */

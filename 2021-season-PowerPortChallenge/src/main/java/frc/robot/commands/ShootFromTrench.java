@@ -25,7 +25,7 @@ public class blueZone extends ParallelRaceGroup {
     super(
       new AlignTurret(p_turret, 3475, 11.1),
       new RunFlywheel(p_flywheel, 270),
-      new ShootBalls(p_index, 2)
+      new ShootBalls(p_index, 3)
     );
   }
 }
