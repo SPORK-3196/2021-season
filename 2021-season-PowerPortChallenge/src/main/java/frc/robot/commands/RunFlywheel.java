@@ -10,17 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
 import com.ctre.phoenix.motorcontrol.InvertType;
 
 public class RunFlywheel extends CommandBase {
 
   Flywheel flywheel;
+  Index index;
   int targetVelocity;
 
   /**
    * Creates a new RunFlywheel.
    */
-  public RunFlywheel(Flywheel p_flywheel, int p_targetVelocity) {
+  public RunFlywheel(Flywheel p_flywheel, int p_targetVelocity, Index index) {
     // Use addRequirements() here to declare subsystem dependencies.
     flywheel = p_flywheel;
     addRequirements(flywheel);
@@ -55,6 +57,6 @@ public class RunFlywheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return index.loaded;
   }
 }

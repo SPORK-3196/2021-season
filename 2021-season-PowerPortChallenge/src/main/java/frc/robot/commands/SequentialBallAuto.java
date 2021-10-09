@@ -20,13 +20,14 @@ public class SequentialBallAuto extends SequentialCommandGroup {
   /**
    * Creates a new FiveBallAuto.
    */
-  public FiveBallAuto(Turret p_turret, Flywheel p_flywheel, Index p_index, Drivetrain p_drivetrain) {
+  public SequentialBallAuto(Turret p_turret, Flywheel p_flywheel, Index p_index, Drivetrain p_drivetrain) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new yellowZone(p_turret, p_flywheel, p_index),
-      new DriveToPickup(p_drivetrain, p_index),
-      new blueZone(p_turret, p_flywheel, p_index)
+     // new DriveForwardTimed(p_drivetrain, 2, 0.6),
+      new AutomaticDrive(p_drivetrain, 5.0, p_turret, p_flywheel),
+      new ShootUpclose(p_turret, p_flywheel, p_index),
+      new DriveForwardTimed(p_drivetrain, 4, -0.6)
     );
   }
 }

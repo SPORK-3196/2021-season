@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import org.opencv.imgproc.CLAHE;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,14 +16,17 @@ import frc.robot.commands.AutomaticDrive;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.ShootFromLine;
 import frc.robot.commands.ShootFromTrench;
+import frc.robot.commands.ClimberOperation;
 import frc.robot.commands.RunIndex;
 import frc.robot.commands.RunTurret;
+import frc.robot.commands.SequentialBallAuto;
 //import frc.robot.commands.RunClimber;
 //import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Climber;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -40,6 +45,8 @@ public class RobotContainer {
   private final DriveWithJoystick driveWithJoystick = new DriveWithJoystick(drivetrain);
   private final RunIndex runIndex = new RunIndex(index);
   private final RunTurret runTurret = new RunTurret(turret, flywheel);
+  //private final ClimberOperation climberOperation = new ClimberOperation(climber);
+
   //private final RunClimber runClimber = new RunClimber(climber);
 
   /**
@@ -51,7 +58,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(driveWithJoystick);
     index.setDefaultCommand(runIndex);
     turret.setDefaultCommand(runTurret);
-    //climber.setDefaultCommand(runClimber);
+    //climber.setDefaultCommand(climberOperation);
   }
 
   /**
@@ -77,7 +84,7 @@ public class RobotContainer {
     } else {
       return new DriveForwardTimed(drivetrain, 1.0);
     */
-    return new ShootFromLine(turret, flywheel, index);
+    return new SequentialBallAuto(turret, flywheel, index, drivetrain);
     //return new AutomaticDrive(drivetrain, 10.0, turret, flywheel);
     }
 

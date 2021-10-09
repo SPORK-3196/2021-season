@@ -15,15 +15,15 @@ import frc.robot.subsystems.Index;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class ShootFromTrench extends ParallelRaceGroup {
+public class ShootUpclose extends ParallelRaceGroup {
   /**
    * Creates a new yellowZone.
    */
-  public ShootFromTrench(Turret p_turret, Flywheel p_flywheel, Index p_index) {
+  public ShootUpclose(Turret p_turret, Flywheel p_flywheel, Index p_index) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     super(
-      new AlignTurret(p_turret, 0, 11.1),
+      new AlignTurret(p_turret, 0, 1.8),
       new RunFlywheel(p_flywheel, 270, p_index),
       new ShootBalls(p_index, 3)
     );

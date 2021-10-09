@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.ejml.equation.IntegerSequence.For;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -11,35 +12,39 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Climber extends SubsystemBase {
-    public CANSparkMax leftClimberMotor = new CANSparkMax(5, MotorType.kBrushless);
-    public CANSparkMax rightClimberMotor = new CANSparkMax(6, MotorType.kBrushless);
+    public CANSparkMax leftClimberMotor = new CANSparkMax(14, MotorType.kBrushless);
+    public CANSparkMax rightClimberMotor = new CANSparkMax(13, MotorType.kBrushless);
 
     public static Solenoid climberSolenoid = new Solenoid(50, 4);
 
     public Climber() {
-        rightClimberMotor.follow(leftClimberMotor);
-        leftClimberMotor.setInverted(true);
-      }
+       Climber.climberSolenoid.set(false);
+    }
     
 
-    public void runMotorsForward(double fowardPower) {
-        leftClimberMotor.set(fowardPower);
-        rightClimberMotor.set(fowardPower);
+    public void runRightMotorForward(double forwardPower) {
+      rightClimberMotor.set(forwardPower);
     }
-    public void runMotorsBackward(double backwardPower) {
-        leftClimberMotor.set(-1 * backwardPower);
-        rightClimberMotor.set(-1* backwardPower);
+    public void runLeftMotorForward(double forwardPower) {
+      leftClimberMotor.set(forwardPower);
+    }
+    public void runLeftMotorBackward(double backwardPower) {
+      leftClimberMotor.set(backwardPower);
+    }
+    public void runRightMotorBackward(double backwardPower) {
+      leftClimberMotor.set(backwardPower);
     }
     public void stopMotors() {
         leftClimberMotor.set(0.0);
         rightClimberMotor.set(0.0);
     }
 
-    public void spinClockwise(double spinClockwisePower) {
-        runMotorsForward(spinClockwisePower);
-      }
+    public void RaiseArms(){
+      climberSolenoid.set(true);
+    }
 
-    public void spinCounterClockwise(double spinCounterClockwisePower) {
-        runMotorsBackward(spinCounterClockwisePower);
-      }
+    public void LowerArms(){
+      climberSolenoid.set(false);
+    }
+
 }
