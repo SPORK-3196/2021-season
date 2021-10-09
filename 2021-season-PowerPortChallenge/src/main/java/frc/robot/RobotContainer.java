@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AutomaticDrive;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.ShootFromLine;
+import frc.robot.commands.ShootFromTrench;
 import frc.robot.commands.RunIndex;
 import frc.robot.commands.RunTurret;
 //import frc.robot.commands.RunClimber;
@@ -75,7 +77,8 @@ public class RobotContainer {
     } else {
       return new DriveForwardTimed(drivetrain, 1.0);
     */
-    return new AutomaticDrive(drivetrain, 5.0, turret, flywheel);
+    return new ShootFromLine(turret, flywheel, index);
+    //return new AutomaticDrive(drivetrain, 10.0, turret, flywheel);
     }
 
 }

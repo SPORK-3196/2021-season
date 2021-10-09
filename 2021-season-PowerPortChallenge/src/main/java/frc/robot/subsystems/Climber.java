@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -14,6 +15,12 @@ public class Climber extends SubsystemBase {
     public CANSparkMax rightClimberMotor = new CANSparkMax(6, MotorType.kBrushless);
 
     public static Solenoid climberSolenoid = new Solenoid(50, 4);
+
+    public Climber() {
+        rightClimberMotor.follow(leftClimberMotor);
+        leftClimberMotor.setInverted(true);
+      }
+    
 
     public void runMotorsForward(double fowardPower) {
         leftClimberMotor.set(fowardPower);

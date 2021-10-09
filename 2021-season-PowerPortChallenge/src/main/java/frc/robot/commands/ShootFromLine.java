@@ -15,11 +15,11 @@ import frc.robot.subsystems.Index;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class yellowZone extends ParallelRaceGroup {
+public class ShootFromLine extends ParallelRaceGroup {
   /**
    * Creates a new yellowZone.
    */
-  public yellowZone(Turret p_turret, Flywheel p_flywheel, Index p_index) {
+  public ShootFromLine(Turret p_turret, Flywheel p_flywheel, Index p_index) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     super(
