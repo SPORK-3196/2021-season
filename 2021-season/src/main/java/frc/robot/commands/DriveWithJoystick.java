@@ -48,7 +48,7 @@ public class DriveWithJoystick extends CommandBase {
 
     drivetrain.drivetrain.arcadeDrive(leftY * -0.80, leftX * 0.80);
 
-
+    /*
     boolean cool = Robot.controllerDrive.getXButton();
     Drivetrain.driveCooler.set(cool);
 
@@ -64,6 +64,7 @@ public class DriveWithJoystick extends CommandBase {
       drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
       drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
     }
+    */
 
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());
     Drivetrain.falconTempDashboard[1].setDouble(drivetrain.rearLeft.getTemperature());

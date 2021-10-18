@@ -7,25 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Turret;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class yellowZone extends ParallelRaceGroup {
+public class SequentialBallAuto extends SequentialCommandGroup {
   /**
-   * Creates a new yellowZone.
+   * Creates a new FiveBallAuto.
    */
-  public yellowZone(Turret p_turret, Flywheel p_flywheel, Index p_index) {
+  public SequentialBallAuto(Turret p_turret, Flywheel p_flywheel, Index p_index, Drivetrain p_drivetrain) {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
+    // super(new FooCommand(), new BarCommand());
     super(
-      new AlignTurret(p_turret, 3300, 10.4),
-      new RunFlywheel(p_flywheel, 270),
-      new ShootBalls(p_index, 3)
+     // new DriveForwardTimed(p_drivetrain, 2, 0.6),
+      new AutomaticDrive(p_drivetrain, 4.0, p_turret, p_flywheel),
+      new ShootUpclose(p_turret, p_flywheel, p_index),
+      new DriveForwardTimed(p_drivetrain, 3, -0.6)
     );
   }
 }

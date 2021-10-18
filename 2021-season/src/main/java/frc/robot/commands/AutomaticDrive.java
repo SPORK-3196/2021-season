@@ -12,20 +12,42 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-public class DriveWithJoystick extends CommandBase {
+public class AutomaticDrive extends CommandBase {
 
   Drivetrain drivetrain;
+
+  public Timer autoTimer = new Timer();
+  public double time = 5.0;
+
+  
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable robotTable = NetworkTableInstance.getDefault().getTable("Default");
+
+
+  double tx = limelightTable.getEntry("tx").getDouble(0.0);
+  double ty = limelightTable.getEntry("ty").getDouble(0.0);
+  double ta = limelightTable.getEntry("ta").getDouble(0.0);
+  double tv = limelightTable.getEntry("tv").getDouble(0.0);
+  boolean shootDuringAuto = robotTable.getEntry("Shoot during auto?").getBoolean(false);
+
 
   /**
    * Creates a new DriveWithJoystick.
    */
-  public DriveWithJoystick(Drivetrain p_drivetrain) {
+  public AutomaticDrive(Drivetrain p_drivetrain, double p_time) {
     // Use addRequirements() here to declare subsystem dependencies.
+    time = p_time;
     drivetrain = p_drivetrain;
     addRequirements(drivetrain);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -36,33 +58,40 @@ public class DriveWithJoystick extends CommandBase {
     drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
     drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
     drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
+    autoTimer.reset();
+    autoTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
    // System.out.println("Execute Works");
+    double controlConstant = -0.1;
+    //double heading_error = tx;
+    double autoSteerAdjustment = controlConstant * tx;
+    double autoDistanceAdjustment = controlConstant * ty;
+    
+    double leftAimInput = autoSteerAdjustment;
+    double rightAimInput = -1 * autoSteerAdjustment;
 
-    double leftX = Robot.controllerDrive.getX(Hand.kLeft);
-    double leftY = Robot.controllerDrive.getY(Hand.kLeft);
+    double leftRangeInput = autoDistanceAdjustment;
+    double rightRangeInput = autoDistanceAdjustment;
+    
+    //drivetrain.drivetrain.arcadeDrive(0, horizontalSteeringAdjustment);
 
-    drivetrain.drivetrain.arcadeDrive(leftY * -0.70, leftX * 0.70);
-    //Manages drivetrain speed
+    /*
+    boolean cool = Robot.controllerDrive.getXButton();
+    Drivetrain.driveCooler.set(cool);
+    */
 
-    // boolean cool = Robot.controllerDrive.getXButton();
-    //Drivetrain.driveCooler.set(cool);
-
-
-    if(Robot.controllerDrive.getAButton()) {
-      drivetrain.frontLeft.setNeutralMode(NeutralMode.Brake);
-      drivetrain.rearLeft.setNeutralMode(NeutralMode.Brake);
-      drivetrain.frontRight.setNeutralMode(NeutralMode.Brake);
-      drivetrain.rearRight.setNeutralMode(NeutralMode.Brake);
+    if(tv < 1) {
+      drivetrain.drivetrain.arcadeDrive(0, 0.5);
     } else {
-      drivetrain.frontLeft.setNeutralMode(NeutralMode.Coast);
-      drivetrain.rearLeft.setNeutralMode(NeutralMode.Coast);
-      drivetrain.frontRight.setNeutralMode(NeutralMode.Coast);
-      drivetrain.rearRight.setNeutralMode(NeutralMode.Coast);
+      if (ty == 0.0) {
+        drivetrain.drivetrain.tankDrive(leftAimInput, rightAimInput);
+      } else {
+        drivetrain.drivetrain.tankDrive(leftRangeInput, rightRangeInput);
+      } 
     }
 
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());
@@ -79,6 +108,6 @@ public class DriveWithJoystick extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return autoTimer.get() >= time;
   }
 }

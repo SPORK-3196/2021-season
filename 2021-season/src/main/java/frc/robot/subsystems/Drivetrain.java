@@ -34,7 +34,7 @@ public class Drivetrain extends SubsystemBase {
 
   //public Orchestra orchestra;
 
-  public static Solenoid driveCooler = new Solenoid(50, 4);
+  // public static Solenoid driveCooler = new Solenoid(50, 4);
 
   public static NetworkTableEntry[] falconTempDashboard = new NetworkTableEntry[4];
   public static NetworkTableEntry rightEncoderDashboard = Shuffleboard.getTab("Default").add("Right Falcon Encoder", 0.0).getEntry();

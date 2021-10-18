@@ -10,17 +10,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Turret;
+import com.revrobotics.ControlType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 
 public class RunFlywheel extends CommandBase {
 
   Flywheel flywheel;
+  Index index;
+  Turret turret;
   int targetVelocity;
 
   /**
    * Creates a new RunFlywheel.
    */
-  public RunFlywheel(Flywheel p_flywheel, int p_targetVelocity) {
+  public RunFlywheel(Flywheel p_flywheel, int p_targetVelocity, Index index, Turret turret) {
     // Use addRequirements() here to declare subsystem dependencies.
     flywheel = p_flywheel;
     addRequirements(flywheel);
@@ -41,6 +46,7 @@ public class RunFlywheel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    turret.hoodPID.setReference(1.8 + Robot.manualHoodOffset, ControlType.kPosition);
     Robot.flywheelVel = (int) (flywheel.flywheel1.getSelectedSensorVelocity());
     Robot.deltaFlywheelVel = Robot.flywheelVel - Robot.lastFlywheelVel;
     Robot.lastFlywheelVel = Robot.flywheelVel;
@@ -55,6 +61,6 @@ public class RunFlywheel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !(Robot.shooting);
   }
 }

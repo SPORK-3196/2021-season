@@ -13,13 +13,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveForwardTimed;
 import frc.robot.commands.DriveWithJoystick;
-import frc.robot.commands.FiveBallAuto;
 //import frc.robot.commands.RunClimber;
-//import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.commands.RunIndex;
 import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Climber;
 import frc.robot.commands.RunTurret;
 import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -79,7 +78,7 @@ public class RobotContainer {
       return new FiveBallAuto(turret, flywheel, index, drivetrain);
     } else {
       */
-      return new DriveForwardTimed(drivetrain, 1.0, -0.6);
+      return new DriveForwardTimed(drivetrain, 1.0, 0.6);
     //}
   }
 }

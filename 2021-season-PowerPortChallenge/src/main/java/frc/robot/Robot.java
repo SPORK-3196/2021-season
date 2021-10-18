@@ -7,18 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
 
   public Compressor compressor = new Compressor(50);
 
-  private UsbCamera cam0;
-  private SerialPort cam0_ser;
+  //private UsbCamera cam0;
+  //private SerialPort cam0_ser;
 
   public static double camX = 320.0;
   public static double camY = 0.0;
@@ -55,8 +55,34 @@ public class Robot extends TimedRobot {
 
   public static int turretError = 100;
 
-  public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
+  private HttpCamera LLFeed;	
+
+  //public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 160.0).getEntry();
+  //public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
+
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTableEntry tx = limelightTable.getEntry("tx");
+  NetworkTableEntry ty = limelightTable.getEntry("ty");
+  NetworkTableEntry ta = limelightTable.getEntry("ta");
+  NetworkTableEntry tv = limelightTable.getEntry("tv");
+
+
+  public NetworkTableEntry camXDashboard = Shuffleboard.getTab("Default").add("Camera X", 0.0).getEntry();
   public NetworkTableEntry camYDashboard = Shuffleboard.getTab("Default").add("Camera Y", 0.0).getEntry();
+  public NetworkTableEntry camADashboard = Shuffleboard.getTab("Default").add("Camera Area", 0.0).getEntry();
+  public NetworkTableEntry camVDashboard = Shuffleboard.getTab("Default").add("Visible Target", 0.0).getEntry();
+
+  public NetworkTableEntry RightBumperPrimary = Shuffleboard.getTab("Default").add("RightBumper - Primary", false).getEntry();
+  public NetworkTableEntry LeftBumperPrimary = Shuffleboard.getTab("Default").add("LeftBumper - Primary", false).getEntry();
+  public NetworkTableEntry RightBumperSecondary = Shuffleboard.getTab("Default").add("RightBumper - Secondary", false).getEntry();
+  public NetworkTableEntry LeftBumperSecondary = Shuffleboard.getTab("Default").add("LeftBumper - Secondary", false).getEntry();
+
+  public NetworkTableEntry RightTriggerPrimary = Shuffleboard.getTab("Default").add("RightTrigger - Primary", 0.0).getEntry();
+  public NetworkTableEntry LeftTriggerPrimary = Shuffleboard.getTab("Default").add("Leftrigger - Primary", 0.0).getEntry();
+
+  public NetworkTableEntry RightTriggerSecondary = Shuffleboard.getTab("Default").add("RightTrigger - Secondary", 0.0).getEntry();
+  public NetworkTableEntry LeftTriggerSecondary = Shuffleboard.getTab("Default").add("Leftrigger - Secondary", 0.0).getEntry();
+  
 
   public NetworkTableEntry flywheelVelocityDashboard = Shuffleboard.getTab("Default").add("Flywheel Velocity", 0.0).getEntry();
 
@@ -70,16 +96,23 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    // autonomous chooser on the dashboaard.
     m_robotContainer = new RobotContainer();
 
-    cam0 = CameraServer.getInstance().startAutomaticCapture();
+    ShuffleboardTab dashboardTab = Shuffleboard.getTab("Dash");	
+    LLFeed = new HttpCamera("limelight", "http://10.31.96.11:5800/stream.mjpg");	
+    dashboardTab.add("LimeLight", LLFeed);	
+    
+    /*
+
+    //cam0 = CameraServer.getInstance().startAutomaticCapture();
 
     try {
-      cam0_ser = new SerialPort(115200, SerialPort.Port.kUSB);
+     // cam0_ser = new SerialPort(115200, SerialPort.Port.kUSB);
     } catch(Exception e) {
-      System.out.println(e.toString());
+      //System.out.println(e.toString());
     }
+    */
 
     compressor.clearAllPCMStickyFaults();
     //compressor.getCompressorCurrent();
@@ -100,7 +133,12 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    String data = "";
+    double LimelightX = tx.getDouble(0.0);
+    double LimelightY = ty.getDouble(0.0);
+    double LimelightArea = ta.getDouble(0.0);
+
+    
+    /*String data = "";
     if(cam0_ser != null) {
       data = cam0_ser.readString();
     }
@@ -113,16 +151,31 @@ public class Robot extends TimedRobot {
         String xStr = numData.substring(0,commaIndex);
         String yStr = numData.substring(commaIndex+1);
 
-        camX = Double.parseDouble(xStr);
-        camY = Double.parseDouble(yStr);
+        //camX = Double.parseDouble(xStr);
+        //camY = Double.parseDouble(yStr);
         //System.out.println(camX);
       } catch(Exception e) {
         System.out.println(e);
       }
     }
+    */
 
-    camXDashboard.setDouble(camX);
-    camYDashboard.setDouble(camY);
+    camXDashboard.setDouble(LimelightX);	
+    camYDashboard.setDouble(LimelightY);	
+    camADashboard.setDouble(LimelightArea);
+
+    RightBumperPrimary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+    LeftBumperPrimary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+
+    RightBumperSecondary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+    LeftBumperSecondary.setBoolean(Robot.controllerSecondary.getBumper(Hand.kLeft));
+
+    RightTriggerPrimary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    LeftTriggerPrimary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    RightTriggerSecondary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+    LeftTriggerSecondary.setDouble(Robot.controllerSecondary.getTriggerAxis(Hand.kLeft));
+
+    
     flywheelVelocityDashboard.setDouble(flywheelVel);
 
     hoodTargetDashboard.setDouble(hoodTarget);
@@ -134,10 +187,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    limelightTable.getEntry("camMode").setNumber(1);
+    limelightTable.getEntry("ledMode").setNumber(1);
   }
 
   @Override
   public void disabledPeriodic() {
+    limelightTable.getEntry("ledMode").setNumber(1);
   }
 
   /**
@@ -145,6 +201,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    limelightTable.getEntry("camMode").setNumber(0);
+    limelightTable.getEntry("ledMode").setNumber(0);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -167,6 +225,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    limelightTable.getEntry("camMode").setNumber(1);
+    limelightTable.getEntry("ledMode").setNumber(1);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -185,6 +245,8 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    limelightTable.getEntry("camMode").setNumber(0);
+    limelightTable.getEntry("ledMode").setNumber(2);
   }
 
   /**

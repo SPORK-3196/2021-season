@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Index;
-import frc.robot.Robot;
 
 public class ShootBalls extends CommandBase {
 

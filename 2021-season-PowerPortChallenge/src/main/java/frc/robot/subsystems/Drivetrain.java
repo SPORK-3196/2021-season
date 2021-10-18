@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -16,9 +15,6 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.util.ArrayList;
-import com.ctre.phoenix.music.Orchestra;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -34,7 +30,7 @@ public class Drivetrain extends SubsystemBase {
 
   //public Orchestra orchestra;
 
-  public static Solenoid driveCooler = new Solenoid(50, 4);
+  //public static Solenoid driveCooler = new Solenoid(50, 4);
 
   public static NetworkTableEntry[] falconTempDashboard = new NetworkTableEntry[4];
   public static NetworkTableEntry rightEncoderDashboard = Shuffleboard.getTab("Default").add("Right Falcon Encoder", 0.0).getEntry();

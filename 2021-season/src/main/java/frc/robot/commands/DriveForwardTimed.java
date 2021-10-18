@@ -26,7 +26,7 @@ public class DriveForwardTimed extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrain = p_drivetrain;
     time = p_time;
-    power = p_power;
+    power = -1 * p_power;
     addRequirements(drivetrain);
   }
 
