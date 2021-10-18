@@ -193,6 +193,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    limelightTable.getEntry("ledMode").setNumber(1);
   }
 
   /**

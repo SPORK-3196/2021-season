@@ -24,7 +24,7 @@ public class ShootFromTrench extends ParallelRaceGroup {
     // super(new FooCommand(), new BarCommand());super();
     super(
       new AlignTurret(p_turret, 0, 11.1),
-      new RunFlywheel(p_flywheel, 270, p_index),
+      new RunFlywheel(p_flywheel, 270, p_index, p_turret),
       new ShootBalls(p_index, 3)
     );
   }

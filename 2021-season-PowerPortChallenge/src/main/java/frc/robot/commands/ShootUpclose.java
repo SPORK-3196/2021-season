@@ -23,8 +23,8 @@ public class ShootUpclose extends ParallelRaceGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     super(
-      new AlignTurret(p_turret, 0, 1.8),
-      new RunFlywheel(p_flywheel, 270, p_index),
+      //new AlignTurret(p_turret, 0, 10.6)
+      new RunFlywheel(p_flywheel, 270, p_index, p_turret),
       new ShootBalls(p_index, 3)
     );
   }

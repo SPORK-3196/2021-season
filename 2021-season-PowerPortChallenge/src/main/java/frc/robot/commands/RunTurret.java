@@ -87,7 +87,7 @@ public class RunTurret extends CommandBase {
     //int greenZone = Robot.controllerSecondary.getPOV(); commented march 8th, bad code
     //boolean redZone = Robot.controllerSecondary.get
 
-    System.out.println("POV = " + pov);
+    // System.out.println("POV = " + pov);
 
     
    /* if (pov == 0)

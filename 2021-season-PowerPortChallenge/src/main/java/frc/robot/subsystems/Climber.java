@@ -3,11 +3,11 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import org.ejml.equation.IntegerSequence.For;
+// import org.ejml.equation.IntegerSequence.For;
 
-import frc.robot.Robot;
+// import frc.robot.Robot;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+// import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -18,7 +18,7 @@ public class Climber extends SubsystemBase {
     public static Solenoid climberSolenoid = new Solenoid(50, 4);
 
     public Climber() {
-       Climber.climberSolenoid.set(false);
+      Climber.climberSolenoid.set(false);
     }
     
 
@@ -29,15 +29,26 @@ public class Climber extends SubsystemBase {
       leftClimberMotor.set(forwardPower);
     }
     public void runLeftMotorBackward(double backwardPower) {
-      leftClimberMotor.set(backwardPower);
+      leftClimberMotor.set(-1 * backwardPower);
     }
     public void runRightMotorBackward(double backwardPower) {
-      leftClimberMotor.set(backwardPower);
+      rightClimberMotor.set(-1 * backwardPower);
     }
     public void stopMotors() {
         leftClimberMotor.set(0.0);
         rightClimberMotor.set(0.0);
     }
+
+    public void runBothMotorsForward(double forwardPower) {
+      leftClimberMotor.set(forwardPower);
+      rightClimberMotor.set(forwardPower);
+    }
+
+    public void runBothMotorsBackward(double backwardPower) {
+      leftClimberMotor.set(-1 * backwardPower);
+      rightClimberMotor.set(-1 * backwardPower);
+    }
+
 
     public void RaiseArms(){
       climberSolenoid.set(true);

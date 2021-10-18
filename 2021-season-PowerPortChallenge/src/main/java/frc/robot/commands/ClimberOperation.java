@@ -37,33 +37,33 @@ public class ClimberOperation extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double LeftClimberArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kLeft);
-    double RightClimberArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kRight);
+    double ClimberArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kRight);
+    double ClimberArmDown = Robot.controllerDrive.getTriggerAxis(Hand.kLeft);
 
     boolean RaiseClimberPistons = Robot.controllerDrive.getAButton();
     boolean LowerClimberPistons = Robot.controllerDrive.getBButton();
     
-    boolean LeftClimberDown = Robot.controllerDrive.getBumper(Hand.kLeft);
-    boolean RightClimberDown = Robot.controllerDrive.getBumper(Hand.kRight);
+    boolean LeftClimberDown = Robot.controllerDrive.getBumper(Hand.kRight);
+    boolean RightClimberDown = Robot.controllerDrive.getBumper(Hand.kLeft);
     
 
-    if (RightClimberArmUp > 0.3) {
-      climber.runRightMotorForward(0.5);
+    if (ClimberArmUp > 0.3) {
+      climber.runBothMotorsForward(0.5);
     }
-    else if (LeftClimberArmUp > 0.3) {
-      climber.runLeftMotorForward(0.5);
-    }
-    else if (LeftClimberDown) {
-      climber.runLeftMotorBackward(0.5);
-    }
-    else if (RightClimberDown) {
-      climber.runRightMotorBackward(0.5);
+    else if (ClimberArmDown > 0.3) {
+      climber.runBothMotorsBackward(0.5);
     }
     else if (RaiseClimberPistons) {
       climber.RaiseArms();
     }
     else if (LowerClimberPistons) {
       climber.LowerArms();
+    }
+    else if (LeftClimberDown) {
+      climber.runLeftMotorBackward(0.5);
+    }
+    else if (RightClimberDown) {
+      climber.runRightMotorBackward(0.5);
     }
     else {
       climber.stopMotors();

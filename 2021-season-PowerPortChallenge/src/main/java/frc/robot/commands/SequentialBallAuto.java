@@ -25,9 +25,9 @@ public class SequentialBallAuto extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
      // new DriveForwardTimed(p_drivetrain, 2, 0.6),
-      new AutomaticDrive(p_drivetrain, 5.0, p_turret, p_flywheel),
+      new AutomaticDrive(p_drivetrain, 4.0, p_turret, p_flywheel),
       new ShootUpclose(p_turret, p_flywheel, p_index),
-      new DriveForwardTimed(p_drivetrain, 4, -0.6)
+      new DriveForwardTimed(p_drivetrain, 3, -0.6)
     );
   }
 }

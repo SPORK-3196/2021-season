@@ -40,12 +40,12 @@ public class RobotContainer {
   private final Index index = new Index();
   private final Turret turret = new Turret();
   private final Flywheel flywheel = new Flywheel();
-  //private final Climber climber = new Climber();
+  private final Climber climber = new Climber();
 
   private final DriveWithJoystick driveWithJoystick = new DriveWithJoystick(drivetrain);
   private final RunIndex runIndex = new RunIndex(index);
   private final RunTurret runTurret = new RunTurret(turret, flywheel);
-  //private final ClimberOperation climberOperation = new ClimberOperation(climber);
+  private final ClimberOperation climberOperation = new ClimberOperation(climber);
 
   //private final RunClimber runClimber = new RunClimber(climber);
 
@@ -58,7 +58,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(driveWithJoystick);
     index.setDefaultCommand(runIndex);
     turret.setDefaultCommand(runTurret);
-    //climber.setDefaultCommand(climberOperation);
+    climber.setDefaultCommand(climberOperation);
   }
 
   /**
