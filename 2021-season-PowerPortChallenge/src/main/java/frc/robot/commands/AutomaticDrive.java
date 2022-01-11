@@ -73,7 +73,7 @@ public class AutomaticDrive extends CommandBase {
     double ty = limelightTable.getEntry("ty").getDouble(0.0);
     double ta = limelightTable.getEntry("ta").getDouble(0.0);
     double tv = limelightTable.getEntry("tv").getDouble(0.0);
-   
+    System.out.println(tv);
     double aimControlConstant = -0.1;
     double distanceControlConstant = -0.1;
     double min_aim_command = 0.1;
