@@ -37,21 +37,27 @@ public class ClimberOperation extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double ClimberArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kRight);
-    double ClimberArmDown = Robot.controllerDrive.getTriggerAxis(Hand.kLeft);
+    double LeftArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kLeft);
+    double RightArmUp = Robot.controllerDrive.getTriggerAxis(Hand.kRight);
+
+    int POV = Robot.controllerSecondary.getPOV();
 
     boolean RaiseClimberPistons = Robot.controllerDrive.getAButton();
     boolean LowerClimberPistons = Robot.controllerDrive.getBButton();
     
-    boolean LeftClimberDown = Robot.controllerDrive.getBumper(Hand.kRight);
-    boolean RightClimberDown = Robot.controllerDrive.getBumper(Hand.kLeft);
+    boolean RightArmDown = Robot.controllerDrive.getBumper(Hand.kRight);
+    boolean LeftArmDown = Robot.controllerDrive.getBumper(Hand.kLeft);
+
+    boolean XButtonDown = Robot.controllerDrive.getXButton();
+    boolean YButtonDown = Robot.controllerDrive.getYButton();
+
     
 
-    if (ClimberArmUp > 0.3) {
-      climber.runBothMotorsForward(0.5);
+    if (LeftArmUp > 0.3) {
+      climber.runLeftMotorBackward(0.5);
     }
-    else if (ClimberArmDown > 0.3) {
-      climber.runBothMotorsBackward(0.5);
+    else if (RightArmUp > 0.3) {
+      climber.runRightMotorBackward(0.5);
     }
     else if (RaiseClimberPistons) {
       climber.RaiseArms();
@@ -59,11 +65,17 @@ public class ClimberOperation extends CommandBase {
     else if (LowerClimberPistons) {
       climber.LowerArms();
     }
-    else if (LeftClimberDown) {
-      climber.runLeftMotorBackward(0.5);
+    else if (RightArmDown) {
+      climber.runRightMotorForward(0.5);
     }
-    else if (RightClimberDown) {
-      climber.runRightMotorBackward(0.5);
+    else if (LeftArmDown) {
+      climber.runLeftMotorForward(0.5);
+    }
+    else if (XButtonDown) {
+      climber.runBothMotorsBackward(0.5);
+    }
+    else if (YButtonDown) {
+      climber.runBothMotorsForward(0.5);
     }
     else {
       climber.stopMotors();
