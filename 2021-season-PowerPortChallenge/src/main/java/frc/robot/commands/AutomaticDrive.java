@@ -78,6 +78,7 @@ public class AutomaticDrive extends CommandBase {
     double distanceControlConstant = -0.1;
     double min_aim_command = 0.1;
 
+    System.out.println(tv);
     
     
     /*
