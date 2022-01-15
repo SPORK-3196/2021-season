@@ -76,7 +76,7 @@ public class AutomaticDrive extends CommandBase {
    
     double aimControlConstant = -0.1;
     double distanceControlConstant = -0.1;
-    double min_aim_command = 0.1;
+    double min_aim_command = 0;
 
     
     
@@ -87,41 +87,30 @@ public class AutomaticDrive extends CommandBase {
 
     if (tv == 0)
     {
-      drivetrain.drivetrain.arcadeDrive(0, 0.15);
-      
+    drivetrain.drivetrain.arcadeDrive(0, 0.05);
     } else {
-
+      if (1 == 1) {
         double heading_error = -1 * tx;
         double steering_adjust = 0.0;
   
-        if (tx > 1.0)
-        {
+      if (tx > 1.0) {
           steering_adjust = aimControlConstant * heading_error - min_aim_command;
       }
-        else if (tx < 1.0)
-        {
-          steering_adjust = aimControlConstant * heading_error + min_aim_command;
-          //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-          //Robot.shooting = true;
-        }
-        
-        double leftInput = 0 + steering_adjust;
-        double rightInput = 0 - steering_adjust;
+      else if (tx < 1.0)
+      {
+        steering_adjust = aimControlConstant * heading_error + min_aim_command;
+        //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
+        //Robot.shooting = true;
+      }
+      
+      double leftInput = 0 + steering_adjust;
+      double rightInput = 0 - steering_adjust;
 
-        drivetrain.drivetrain.tankDrive(leftInput, rightInput);
+      drivetrain.drivetrain.tankDrive(leftInput, rightInput);
+      }
     }
 
-    if(Robot.shooting) {
-        if(Robot.flywheelVel < Flywheel.velocityTarget) {
-          flywheel.flywheel1.set(1.0);
-        } else {
-          flywheel.flywheel1.set(0.925);//og 0.95
-        }
-        turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-        Robot.shooting = true;
-    } else {
-        flywheel.flywheel1.set(0.0);
-    }
+    
 
     
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());

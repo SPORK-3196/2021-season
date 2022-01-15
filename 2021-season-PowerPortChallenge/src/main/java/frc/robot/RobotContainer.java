@@ -84,8 +84,8 @@ public class RobotContainer {
     } else {
       return new DriveForwardTimed(drivetrain, 1.0);
     */
-    return new SequentialBallAuto(turret, flywheel, index, drivetrain);
-    //return new AutomaticDrive(drivetrain, 10.0, turret, flywheel);
+    // return new SequentialBallAuto(turret, flywheel, index, drivetrain);
+    return new AutomaticDrive(drivetrain, 30.0, turret, flywheel);
     }
 
 }
