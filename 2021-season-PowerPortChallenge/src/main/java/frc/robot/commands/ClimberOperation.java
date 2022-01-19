@@ -7,12 +7,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Climber;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class ClimberOperation extends CommandBase {
 

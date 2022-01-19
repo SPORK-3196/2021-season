@@ -8,13 +8,11 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.ControlType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Turret;
@@ -29,7 +27,7 @@ public class AutomaticDrive extends CommandBase {
   public Timer autoTimer = new Timer();
   public double time = 5.0;
 
-  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+ 
   NetworkTable robotTable = NetworkTableInstance.getDefault().getTable("Default");
 
 
@@ -68,56 +66,57 @@ public class AutomaticDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double tx = limelightTable.getEntry("tx").getDouble(0.0);
-    double ty = limelightTable.getEntry("ty").getDouble(0.0);
-    double ta = limelightTable.getEntry("ta").getDouble(0.0);
-    double tv = limelightTable.getEntry("tv").getDouble(0.0);
-   
-    double aimControlConstant = -0.1;
+    boolean isTargetVisible = false;
+    double aimControlConstant = -0.04;
     double distanceControlConstant = -0.1;
     double min_aim_command = 0;
 
-    
-    
-    /*
-    boolean cool = Robot.controllerDrive.getXButton();
-    Drivetrain.driveCooler.set(cool);
-    */
+    NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    double tx = limelightTable.getEntry("tx").getValue().getDouble();
+    double ty = limelightTable.getEntry("ty").getValue().getDouble();
+    double ta = limelightTable.getEntry("ta").getValue().getDouble();
+    double tv = limelightTable.getEntry("tv").getValue().getDouble();
 
-    if (tv == 0)
-    {
-    drivetrain.drivetrain.arcadeDrive(0, 0.05);
-    } else {
-      if (1 == 1) {
-        double heading_error = -1 * tx;
-        double steering_adjust = 0.0;
-  
-      if (tx > 1.0) {
-          steering_adjust = aimControlConstant * heading_error - min_aim_command;
-      }
-      else if (tx < 1.0)
-      {
-        steering_adjust = aimControlConstant * heading_error + min_aim_command;
-        //turret.hoodPID.setReference(9.5, ControlType.kPosition); //1.8 originally, changed to 2.0, changed to 2.2, changed 2.3, changed 2.5, changed 2.8, changed 3.0
-        //Robot.shooting = true;
-      }
-      
-      double leftInput = 0 + steering_adjust;
-      double rightInput = 0 - steering_adjust;
+    double heading_error = -1 * tx;
+    double distance_error = -1 * ty;
+    double steering_adjust = 0.0;
 
-      drivetrain.drivetrain.tankDrive(leftInput, rightInput);
-      }
+    double leftInput = 0.0;
+    double rightInput = 0.0;
+    double distance_adjust = 0.0;
+
+    if (tv == 1) {
+      isTargetVisible = true;
+    }
+    else if (tv == 0) {
+      isTargetVisible = false;
     }
 
-    
+    if (isTargetVisible) {
+      if (tx > 1.0) {
+        steering_adjust = (aimControlConstant * heading_error) - min_aim_command;
+      }
+      else if (tx < 1.0) {
+        steering_adjust = (aimControlConstant * heading_error) + min_aim_command;
+      }
+    }
+    else if (!isTargetVisible) {
+      drivetrain.drivetrain.arcadeDrive(0, 0.1);
+    }
 
+    distance_adjust = distanceControlConstant * distance_error;
     
+    
+    leftInput += steering_adjust + distance_adjust;
+    rightInput -= steering_adjust + distance_adjust;
+
+    drivetrain.drivetrain.tankDrive(leftInput, rightInput);
+    
+   
     Drivetrain.falconTempDashboard[0].setDouble(drivetrain.frontLeft.getTemperature());
     Drivetrain.falconTempDashboard[1].setDouble(drivetrain.rearLeft.getTemperature());
     Drivetrain.falconTempDashboard[2].setDouble(drivetrain.frontRight.getTemperature());
     Drivetrain.falconTempDashboard[3].setDouble(drivetrain.rearRight.getTemperature());
-
   }
 
 
@@ -129,6 +128,7 @@ public class AutomaticDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return autoTimer.get() >= time;
+    // return autoTimer.get() >= time;
+    return false;
   }
 }
