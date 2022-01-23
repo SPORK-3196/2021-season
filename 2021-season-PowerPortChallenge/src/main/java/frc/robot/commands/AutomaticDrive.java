@@ -67,16 +67,18 @@ public class AutomaticDrive extends CommandBase {
   @Override
   public void execute() {
     boolean isTargetVisible = false;
-    double aimControlConstant = -0.04;
+    boolean targetNotVisible = true;
+    double aimControlConstant = -0.07;
     double distanceControlConstant = -0.1;
-    double min_aim_command = 0;
+    double min_aim_command = 0.03;
 
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     double tx = limelightTable.getEntry("tx").getValue().getDouble();
+    double negtx = -1 * tx;
     double ty = limelightTable.getEntry("ty").getValue().getDouble();
     double ta = limelightTable.getEntry("ta").getValue().getDouble();
     double tv = limelightTable.getEntry("tv").getValue().getDouble();
-
+    
     double heading_error = -1 * tx;
     double distance_error = -1 * ty;
     double steering_adjust = 0.0;
@@ -87,9 +89,11 @@ public class AutomaticDrive extends CommandBase {
 
     if (tv == 1) {
       isTargetVisible = true;
+      targetNotVisible = false;
     }
     else if (tv == 0) {
       isTargetVisible = false;
+      targetNotVisible = true;
     }
 
     if (isTargetVisible) {
@@ -100,15 +104,15 @@ public class AutomaticDrive extends CommandBase {
         steering_adjust = (aimControlConstant * heading_error) + min_aim_command;
       }
     }
-    else if (!isTargetVisible) {
-      drivetrain.drivetrain.arcadeDrive(0, 0.1);
+    if (targetNotVisible) {
+      steering_adjust = 0.5;
     }
 
     distance_adjust = distanceControlConstant * distance_error;
     
     
-    leftInput += steering_adjust + distance_adjust;
-    rightInput -= steering_adjust + distance_adjust;
+    leftInput += steering_adjust;
+    rightInput -= steering_adjust;
 
     drivetrain.drivetrain.tankDrive(leftInput, rightInput);
     

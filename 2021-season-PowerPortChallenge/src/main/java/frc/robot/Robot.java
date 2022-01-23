@@ -187,13 +187,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    limelightTable.getEntry("camMode").setNumber(1);
+    limelightTable.getEntry("camMode").setNumber(0);
     limelightTable.getEntry("ledMode").setNumber(0);
   }
 
   @Override
   public void disabledPeriodic() {
     limelightTable.getEntry("ledMode").setNumber(0);
+    limelightTable.getEntry("camMode").setNumber(0);
   }
 
   /**
