@@ -7,7 +7,12 @@
 
 package frc.robot.subsystems;
 
+import java.net.Socket;
+import java.util.ArrayList;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -27,7 +32,8 @@ public class Drivetrain extends SubsystemBase {
 
   public DifferentialDrive drivetrain = new DifferentialDrive(left, right);
 
-  //public Orchestra orchestra;
+  public Orchestra orchestra;
+  public String song;
 
   //public static Solenoid driveCooler = new Solenoid(50, 4);
 
@@ -35,6 +41,8 @@ public class Drivetrain extends SubsystemBase {
   public static NetworkTableEntry rightEncoderDashboard = Shuffleboard.getTab("Default").add("Right Falcon Encoder", 0.0).getEntry();
   public static NetworkTableEntry leftEncoderDashboard = Shuffleboard.getTab("Default").add("Left Falcon Encoder", 0.0).getEntry();
   public static NetworkTableEntry leftRightDifferenceDashboard = Shuffleboard.getTab("Default").add("LeftRight Difference", 0.0).getEntry();
+
+  public static NetworkTableEntry musicTrackTime = Shuffleboard.getTab("Default").add("Music Track Time", 0.0).getEntry();
 
   public int rightEncoderOffset = 0;
   public int leftEncoderOffset = 0;
@@ -56,6 +64,18 @@ public class Drivetrain extends SubsystemBase {
     leftRightDifference = getLeftEncoderPosition() - getRightEncoderPosition();
   }
 
+  public void playMusic() {
+    orchestra.play();
+  }
+
+  public void pauseMusic() {
+    orchestra.pause();
+  }
+
+  public void stopMusic() {
+    orchestra.stop();
+  }
+
   /**
    * Creates a new Drivetrain.
    */
@@ -69,13 +89,14 @@ public class Drivetrain extends SubsystemBase {
 
     resetEncoders();
 
-    /*ArrayList<TalonFX> fx_s = new ArrayList<TalonFX>();
+    ArrayList<TalonFX> fx_s = new ArrayList<TalonFX>();
     fx_s.add(frontLeft);
-    //fx_s.add(rearLeft);
+    fx_s.add(rearLeft);
     fx_s.add(frontRight);
-    //fx_s.add(rearRight);
-
-    orchestra = new Orchestra(fx_s);*/
+    fx_s.add(rearRight);
+    
+    song = "Crab.chrp";
+    orchestra = new Orchestra(fx_s, song);
   }
 
   @Override
@@ -83,6 +104,7 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     rightEncoderDashboard.setDouble(getRightEncoderPosition());
     leftEncoderDashboard.setDouble(getLeftEncoderPosition());
+    musicTrackTime.setDouble(orchestra.getCurrentTime());
 
     leftRightDifference = getLeftEncoderPosition() - getRightEncoderPosition();
     leftRightDifferenceDashboard.setDouble(leftRightDifference);
